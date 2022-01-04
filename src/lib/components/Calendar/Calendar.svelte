@@ -1,149 +1,141 @@
 <script>
 	const today = new Date();
-	let selectedMonth = new Date(today.getFullYear(), today.getMonth());
+	export let firstDayOfTheWeek = 0;
+	export let selectedYear = today.getFullYear();
+	export let selectedMonth = today.getMonth();
 
-	const weekStartsWith = 1;
+	$: firstDayOfTheMonth = new Date(selectedYear, selectedMonth);
+	$: lastDayOfTheMonth = new Date(selectedYear, selectedMonth + 1, -1);
 
-	let page;
+	let days;
 	$: {
-		(() => {
-			page = new Array(6);
-			for (let i = 0; i < page.length; i++) {
-				page[i] = new Array(7);
-			}
-			let week = 0;
-			let day = weekStartsWith - selectedMonth.getDay() + 1;
-			for (let i = 0; i < page.length * page[0].length; i++) {
-				page[week][i % page[0].length] = new Date(
-					selectedMonth.getFullYear(),
-					selectedMonth.getMonth(),
-					day
-				);
+		days = [];
 
-				day++;
-				if (i % 7 == 6) week++;
-			}
-		})();
+		let pageFirstDay = firstDayOfTheWeek - firstDayOfTheMonth.getDay() + 1;
+		let pageLength =
+			-pageFirstDay + lastDayOfTheMonth.getDate() + (6 - lastDayOfTheMonth.getDay()) + 1;
+
+		for (let i = 0; i < pageLength; i++) {
+			days = [...days, new Date(selectedYear, selectedMonth, pageFirstDay + i)];
+		}
 	}
 
 	function incrementMonth() {
-		selectedMonth = new Date(selectedMonth.getFullYear(), selectedMonth.getMonth() + 1);
+		selectedMonth++;
+		if (selectedMonth > 11) {
+			selectedMonth = 0;
+			selectedYear++;
+		}
 	}
 	function decrementMonth() {
-		selectedMonth = new Date(selectedMonth.getFullYear(), selectedMonth.getMonth() - 1);
+		selectedMonth--;
+		if (selectedMonth < 0) {
+			selectedMonth = 11;
+			selectedYear--;
+		}
 	}
 </script>
 
 <div class="Calendar">
-	<table>
-		<thead>
-			<tr>
-				<th colspan={page[0].length}>
-					<div class="header">
-						<strong class="month"
-							>{selectedMonth.toLocaleString('default', { month: 'long' })}<wbr />
-							{selectedMonth.toLocaleString('default', { year: 'numeric' })}</strong
-						>
-						<button
-							type="button"
-							class="change-month prev-month"
-							title="Previous Month"
-							on:click={decrementMonth}>&#10094;</button
-						>
-						<button
-							type="button"
-							class="change-month next-month"
-							title="Next Month"
-							on:click={incrementMonth}>&#10095;</button
-						>
-					</div>
-				</th>
-			</tr>
-			<tr>
-				{#each page[0] as weekday}
-					<th class="weekday">{weekday.toLocaleString('default', { weekday: 'short' })}</th>
-				{/each}
-			</tr>
-		</thead>
-		<tbody>
-			{#each page as week}
-				<tr>
-					{#each week as day}
-						<td
-							class:lastMonth={day.getMonth() != selectedMonth.getMonth()}
-							class:today={day.getFullYear() == today.getFullYear() &&
-								day.getMonth() == today.getMonth() &&
-								day.getDate() == today.getDate()}
-						>
-							{day.toLocaleString('default', { day: '2-digit' })}
-						</td>
-					{/each}
-				</tr>
-			{/each}
-		</tbody>
-	</table>
+	<div class="header">
+		<button
+			type="button"
+			class="change-month prev-month"
+			title="Previous Month"
+			on:click={decrementMonth}>&#10094</button
+		>
+		<button
+			type="button"
+			class="change-month next-month"
+			title="Next Month"
+			on:click={incrementMonth}>&#10095</button
+		>
+		<div class="month">
+			<h1>{firstDayOfTheMonth.toLocaleString('default', { month: 'long' })}</h1>
+			<h6>{firstDayOfTheMonth.toLocaleString('default', { year: 'numeric' })}</h6>
+		</div>
+	</div>
+	<div class="days">
+		{#each days.slice(0, 7) as day}
+			<div
+				class="weekday"
+				class:thisWeekday={today.getFullYear() == day.getFullYear() &&
+					today.getMonth() == day.getMonth() &&
+					today.getDay() == day.getDay()}
+			>
+				{day.toLocaleString('default', { weekday: 'narrow' })}
+			</div>
+		{/each}
+		{#each days as day}
+			<div
+				class="day"
+				class:notInThisMonth={day.getMonth() != selectedMonth}
+				class:today={today.getFullYear() == day.getFullYear() &&
+					today.getMonth() == day.getMonth() &&
+					today.getDate() == day.getDate()}
+			>
+				{day.toLocaleString('default', { day: '2-digit' })}
+			</div>
+		{/each}
+	</div>
 </div>
 
 <style>
 	.Calendar {
-		/* min-width: fit-content; */
-		min-height: fit-content;
-		overflow: auto;
-		resize: both;
-		min-width: fit-content;
-	}
-	table {
 		text-align: center;
-		border-collapse: collapse;
-		width: 100%;
-		height: 100%;
-		border-style: solid;
-		border-color: black;
+		background-color: whitesmoke;
 	}
-	table .header {
+	.header {
 		background-color: darkslategray;
-		white-space: nowrap;
-		justify-content: center;
-		color: white;
-		height: 5rem;
-		font-size: 30px;
+		height: 10rem;
+		color: whitesmoke;
+		overflow: hidden;
 	}
-	table .header > * {
-		display: inline-block;
-	}
-	table thead {
-		border-style: none;
-		background-color: gray;
-	}
-
-	.change-month {
+	.header > * {
 		height: 100%;
-		width: 15%;
+	}
+	.header .month {
+		display: inline-flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+	.header .change-month {
 		background-color: transparent;
+		font-size: large;
 		border: none;
+		width: 15%;
 		opacity: 0.5;
-		color: white;
+		color: whitesmoke;
 	}
-	.change-month:hover {
-		background-color: rgba(245, 245, 245, 0.25);
+	.header .change-month:hover {
+		background-color: rgba(245, 245, 245, 0.1);
+		opacity: 1;
 	}
-	.prev-month {
+	.header .prev-month {
 		float: left;
 	}
-	.next-month {
+	.header .next-month {
 		float: right;
 	}
-
-	.weekday {
+	.days {
+		display: grid;
+		gap: 50px;
+		grid-template-columns: auto auto auto auto auto auto auto;
+		justify-content: center;
+	}
+	.days .weekday {
 		text-transform: uppercase;
-	}
-	.today {
-		color: white;
 		font-weight: bold;
-		background: blue;
-		border-radius: 5rem;
 	}
-	.lastMonth {
+	.days .thisWeekday {
+		text-decoration: underline;
+	}
+	.days .notInThisMonth {
 		opacity: 0.2;
+	}
+	.days .today {
+		font-weight: bold;
+		color: whitesmoke;
+		background-color: darkslategray;
 	}
 </style>

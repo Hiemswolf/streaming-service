@@ -4,4 +4,12 @@
 </script>
 
 <Navigation />
-<slot />
+<main>
+	<slot />
+</main>
+
+<style>
+	main {
+		background-color: black;
+	}
+</style>
