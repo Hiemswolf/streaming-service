@@ -94,12 +94,12 @@
 	.header > * {
 		height: 100%;
 	}
-	.header .month {
+	.month {
 		display: inline-flex;
 		flex-direction: column;
 		justify-content: center;
 	}
-	.header .change-month {
+	.change-month {
 		background-color: transparent;
 		font-size: large;
 		border: none;
@@ -107,14 +107,14 @@
 		opacity: 0.5;
 		color: whitesmoke;
 	}
-	.header .change-month:hover {
+	.change-month:hover {
 		background-color: rgba(245, 245, 245, 0.1);
 		opacity: 1;
 	}
-	.header .prev-month {
+	.prev-month {
 		float: left;
 	}
-	.header .next-month {
+	.next-month {
 		float: right;
 	}
 	.days {
@@ -123,17 +123,21 @@
 		grid-template-columns: auto auto auto auto auto auto auto;
 		justify-content: center;
 	}
-	.days .weekday {
+	.day {
+		color: black;
+		padding: 5px;
+	}
+	.weekday {
 		text-transform: uppercase;
 		font-weight: bold;
 	}
-	.days .thisWeekday {
+	.thisWeekday {
 		text-decoration: underline;
 	}
-	.days .notInThisMonth {
+	.notInThisMonth {
 		opacity: 0.2;
 	}
-	.days .today {
+	.today {
 		font-weight: bold;
 		color: whitesmoke;
 		background-color: darkslategray;

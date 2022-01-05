@@ -1,15 +1,38 @@
 <script lang="ts">
-	import '../global.css';
-	import Navigation from '../lib/components/Navigation.svelte';
+	import '@src/style.css';
+	import Nav from '@components/Nav.svelte';
+	import Foot from '@components/Foot.svelte';
+	import Popup from '@src/components/popups/FullscreenPopup.svelte';
+
+	let darkMode = true;
 </script>
 
-<Navigation />
-<main>
-	<slot />
-</main>
+<div id="app" class:dark={darkMode}>
+	<div id="container">
+		<div id="top-content">
+			<Nav />
+			<div id="page">
+				<slot />
+			</div>
+		</div>
+		<div id="middle-content" />
+		<div id="bottom-content" />
+	</div>
+	<div class="footer">
+		<Foot />
+	</div>
+</div>
 
 <style>
-	main {
-		background-color: black;
+	#app {
+		background-color: var(--theme-bg);
+	}
+	#container {
+		width: 100%;
+		min-height: 100vh;
+		color: whitesmoke;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
 	}
 </style>

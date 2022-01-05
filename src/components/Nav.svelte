@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Search from './Search.svelte';
-	import { user } from '../stores';
+	import { user } from '@src/stores';
 	let loggedIn = false;
 
 	function logIn() {
@@ -16,7 +16,7 @@
 
 <nav>
 	<div>
-		<a href="/" class="home-link">Service</a>
+		<a sveltekit:prefetch href="/" class="home-link">Service</a>
 		<Search />
 	</div>
 	<div>
@@ -33,8 +33,9 @@
 <style>
 	nav {
 		display: flex;
+		flex-wrap: wrap;
 		justify-content: space-between;
-		background-color: blueviolet;
+		background-color: var(--theme-nav);
 		color: white;
 	}
 	nav a {
