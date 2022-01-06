@@ -36,36 +36,45 @@
 	}
 </script>
 
-<div class="Calendar">
-	<div class="header">
-		<button
-			type="button"
-			class="change-month prev-month"
-			title="Previous Month"
-			on:click={decrementMonth}>&#10094</button
-		>
-		<button
-			type="button"
-			class="change-month next-month"
-			title="Next Month"
-			on:click={incrementMonth}>&#10095</button
-		>
-		<div class="month">
-			<h1>{firstDayOfTheMonth.toLocaleString('default', { month: 'long' })}</h1>
-			<h6>{firstDayOfTheMonth.toLocaleString('default', { year: 'numeric' })}</h6>
+<div
+	class={`Calendar ${firstDayOfTheMonth
+		.toLocaleString('default', { month: 'short' })
+		.toLowerCase()}`}
+>
+	<div class="banner">
+		<div class="banner__header">
+			<button
+				type="button"
+				class="change-month prev-month"
+				title="Previous Month"
+				on:click={decrementMonth}>&#10094</button
+			>
+			<button
+				type="button"
+				class="change-month next-month"
+				title="Next Month"
+				on:click={incrementMonth}>&#10095</button
+			>
+			<div class="month">
+				<h1>{firstDayOfTheMonth.toLocaleString('default', { month: 'long' })}</h1>
+				<h6>{firstDayOfTheMonth.toLocaleString('default', { year: 'numeric' })}</h6>
+			</div>
+		</div>
+		<div class="weekdays days">
+			{#each days.slice(7, 14) as day}
+				<div
+					class="weekday day"
+					class:thisWeekday={today.getFullYear() == day.getFullYear() &&
+						today.getMonth() == day.getMonth() &&
+						today.getDay() == day.getDay()}
+				>
+					{day.toLocaleString('default', { weekday: 'narrow' })}
+				</div>
+			{/each}
 		</div>
 	</div>
+
 	<div class="days">
-		{#each days.slice(0, 7) as day}
-			<div
-				class="weekday"
-				class:thisWeekday={today.getFullYear() == day.getFullYear() &&
-					today.getMonth() == day.getMonth() &&
-					today.getDay() == day.getDay()}
-			>
-				{day.toLocaleString('default', { weekday: 'narrow' })}
-			</div>
-		{/each}
 		{#each days as day}
 			<div
 				class="day"
@@ -84,14 +93,15 @@
 	.Calendar {
 		text-align: center;
 		background-color: whitesmoke;
+		resize: both;
+		overflow: auto;
 	}
-	.header {
-		background-color: darkslategray;
+	.banner__header {
 		height: 10rem;
 		color: whitesmoke;
 		overflow: hidden;
 	}
-	.header > * {
+	.banner__header > * {
 		height: 100%;
 	}
 	.month {
@@ -119,27 +129,74 @@
 	}
 	.days {
 		display: grid;
-		gap: 50px;
-		grid-template-columns: auto auto auto auto auto auto auto;
+		gap: 0;
+		grid-template-columns: repeat(7, 30px);
 		justify-content: center;
 	}
 	.day {
 		color: black;
 		padding: 5px;
 	}
+	.weekdays {
+		background-color: #0000003d;
+	}
 	.weekday {
+		display: inline-block;
 		text-transform: uppercase;
 		font-weight: bold;
+		color: black;
 	}
 	.thisWeekday {
-		text-decoration: underline;
+		background-color: #0000001a;
 	}
 	.notInThisMonth {
 		opacity: 0.2;
 	}
 	.today {
 		font-weight: bold;
-		color: whitesmoke;
-		background-color: darkslategray;
+		outline-style: solid;
+		outline-width: 1px;
+		border-radius: 5px;
+	}
+
+	.banner {
+		background-color: gray;
+	}
+	.jan .banner {
+		/* darkslategray */
+		background-color: #144ebb;
+	}
+	.feb .banner {
+		background-color: #a11d3e;
+	}
+	.mar .banner {
+		background-color: #4f9932;
+	}
+	.apr .banner {
+		background-color: #bd4858;
+	}
+	.may .banner {
+		background-color: #ec74c8;
+	}
+	.jun .banner {
+		background-color: #4f9ee2;
+	}
+	.jul .banner {
+		background-color: #0a3161;
+	}
+	.aug .banner {
+		background-color: #ad3a32;
+	}
+	.sep .banner {
+		background-color: #bd993f;
+	}
+	.oct .banner {
+		background-color: #dd6017;
+	}
+	.nov .banner {
+		background-color: #6b3c26;
+	}
+	.dec .banner {
+		background-color: #1e306b;
 	}
 </style>

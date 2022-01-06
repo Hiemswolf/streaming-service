@@ -3,6 +3,7 @@ import {
 	// readable,
 	// derived
 } from "svelte/store";
+import { invalidate } from '$app/navigation';
 
 type User = {
 	name: string,
@@ -11,4 +12,14 @@ type User = {
 
 export const user = writable<User>(null);
 
-export const searchQuery = writable<string>();
+export const searchQuery = (() => {
+	const { subscribe, update, set } = writable('');
+
+	return {
+		subscribe,
+		update,
+		set: (val) => {
+			set(val ? val.trim().replace(/\s+/g, ' ') : val);
+		}
+	};
+})();

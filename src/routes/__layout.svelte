@@ -3,6 +3,10 @@
 	import Nav from '@components/Nav.svelte';
 	import Foot from '@components/Foot.svelte';
 	import Popup from '@src/components/popups/FullscreenPopup.svelte';
+	import { prefetchRoutes } from '$app/navigation';
+	import { onMount } from 'svelte';
+
+	onMount(() => prefetchRoutes());
 
 	let darkMode = true;
 </script>
