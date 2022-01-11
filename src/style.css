@@ -1,24 +1,41 @@
-* {
+*, *::after, *::before {
 	box-sizing: border-box;
 	margin: 0;
+	padding: 0;
+	word-wrap: break-word;
 }
 
-:root, body, #svelte, #app {
-	background-color: black;
-	min-width: 100%;
-	width: fit-content;
-	min-height: 100vh;
+#app, #svelte, :root, body {
+	background-color: #000;
+	min-width: min-content;
+	min-height: min-content;
+	width: 100%;
+	height: 100%;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+	-webkit-font-smoothing: antialiased;
 }
 
-body {
-	margin: 0;
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
-
-img {
+canvas, img, picture, svg, video {
+	display: block;
 	max-width: 100%;
 	max-height: 100%;
 }
+
+button, input, select, textarea {
+	font: inherit;
+}
+
+button {
+	border-radius: 0;
+	border-style: none;
+	background-color: #000;
+}
+
+button:hover {
+	background-color: #fff;
+}
+
+/* THEMES */
 
 /* Colors:
 Onyx: #35393C
@@ -32,6 +49,79 @@ Dark Purple: #351E29
 	--theme-bg: whitesmoke;
 	--theme-foot: #C490D1;
 }
+
 #app.dark {
 	--theme-bg: #35393C;
+}
+
+
+
+
+.nav {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: center;
+	background-color: var(--theme-nav);
+	color: #fff;
+	height: 5vh;
+}
+
+.nav * {
+	color: #fff;
+	display: inline-block;
+}
+
+
+.home-link {
+	text-transform: uppercase;
+}
+
+.login-buttons {
+	height: 100%;
+}
+
+.login-buttons * {
+	height: 100%;
+}
+
+
+#skip-nav {
+	position: absolute;
+	background-color: #f5f5f5;
+	padding: 0 0.5em 0.5em;
+	border-radius: 0 0 0.5em 0.5em;
+	transform: translateY(-120%);
+	transition: transform 30ms ease;
+}
+
+#skip-nav:focus {
+	transform: translateY(0);
+}
+
+.search-form {
+	display: inline-block;
+}
+
+.sign-up-form {
+	color: blue;
+	background-color: gray;
+	text-align: center;
+}
+
+#Foot {
+	background-color: var(--theme-foot);
+}
+
+#app {
+	background-color: var(--theme-bg);
+}
+
+#container {
+	width: 100%;
+	min-height: 100vh;
+	color: whitesmoke;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }

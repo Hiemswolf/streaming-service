@@ -12,21 +12,10 @@
 	}
 </script>
 
-<div class="Search">
-	<form action="/search" on:submit|preventDefault>
-		<input type="text" placeholder="Search" name="q" bind:value={query} /><a
-			sveltekit:prefetch
-			href={`/search${query && query.trim() ? `?q=${query}` : ''}`}
-			><button type="submit" on:click={handleSubmit}>Go</button></a
-		>
-	</form>
-</div>
-
-<style>
-	.Search {
-		display: inline-block;
-	}
-	form {
-		white-space: nowrap;
-	}
-</style>
+<form class="search-form" action="/search" on:submit|preventDefault>
+	<input type="text" placeholder="Search" name="q" bind:value={query} /><a
+		sveltekit:prefetch
+		href={`/search${query && query.trim() ? `?q=${query}` : ''}`}
+		><button type="submit" on:click={handleSubmit}>Go</button></a
+	>
+</form>

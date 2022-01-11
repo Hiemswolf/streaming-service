@@ -2,13 +2,22 @@
 	import '@src/style.css';
 	import Nav from '@components/Nav.svelte';
 	import Foot from '@components/Foot.svelte';
-	import Popup from '@src/components/popups/FullscreenPopup.svelte';
 	import { prefetchRoutes } from '$app/navigation';
 	import { onMount } from 'svelte';
 
-	onMount(() => prefetchRoutes());
-
 	let darkMode = true;
+	onMount(() => {
+		let darkPref;
+		const matchDark = window.matchMedia('(prefers-color-scheme: dark)');
+		darkPref = matchDark.matches;
+		matchDark.addEventListener('change', (evt) => {
+			darkPref = evt.matches;
+			darkMode = darkPref;
+		});
+		darkMode = darkPref;
+
+		prefetchRoutes();
+	});
 </script>
 
 <div id="app" class:dark={darkMode}>
@@ -26,17 +35,3 @@
 		<Foot />
 	</div>
 </div>
-
-<style>
-	#app {
-		background-color: var(--theme-bg);
-	}
-	#container {
-		width: 100%;
-		min-height: 100vh;
-		color: whitesmoke;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-	}
-</style>
