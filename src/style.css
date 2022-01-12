@@ -60,26 +60,33 @@ Dark Purple: #351E29
 .nav {
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-between;
+	justify-content: center;
 	align-items: center;
 	background-color: var(--theme-nav);
 	color: #fff;
-	height: 5vh;
 }
 
-.nav * {
-	color: #fff;
+.nav__body {
+	flex-grow: 1;
+	display: flex;
+	border: 1px solid red;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+
+.nav__body>* {
 	display: inline-block;
 }
 
+.nav__login-buttons {
+	height: 100%;
+}
 
-.home-link {
+.nav__logo {
 	text-transform: uppercase;
 }
 
-.login-buttons {
-	height: 100%;
-}
+
 
 .login-buttons * {
 	height: 100%;
